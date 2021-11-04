@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
+import os
+import csv
 
 last_active_page = ''
 
@@ -17,9 +19,10 @@ def process_person_in_new_tab(url):
     time.sleep(1)
 
     # TODO extract information from person
-
+    att =[]
     # nombre
-
+    title = driver.find_element_by_xpath('//h1').text
+    att.append(title)
     # cargo (job_title)
 
     # partido (affiliation)
@@ -35,7 +38,13 @@ def process_person_in_new_tab(url):
     # foto (V2?) => aqui parece que hay derechos y demas
 
     # bruto anual
+    salary =driver.find_element_by_xpath("//div[@id='comparator']")
+    salary = salary.text.replace('COMPARADOR','').split()[0]
+    att.append(salary)
+    politicianList.append(att)
 
+#get_attribute() to get value of input box
+    
     # bruto mensual
 
     # close the active tab
@@ -56,7 +65,7 @@ def process_page():
         last_active_page = active_page.text
         persons = driver.find_elements_by_class_name('e-result')
         print(len(persons))
-
+        
         # looping over persons
         for person in persons:
             #product_name = result.text
@@ -73,7 +82,10 @@ def process_page():
         # return value to stop processsing
         return False
 
-    
+ 
+
+
+               
 
 # does not work
 # r = requests.get('https://transparentia.newtral.es/busqueda-avanzada?name=&inactive=true')
@@ -81,6 +93,8 @@ def process_page():
 # print(soup.html)
 # persons = soup.find_all('div', class_='e-result')
 # print(persons)
+
+
 
 # trying to use Selenium
 print("initializing webdriver")
@@ -93,6 +107,11 @@ driver.get(url)
 print("sleeping")
 time.sleep(2)
 
+
+politicianList = []
+headerList=["Name","Salary"]
+politicianList.append(headerList)
+i = 0
 # processing one page (TODO loop)
 while process_page():
     
@@ -101,8 +120,16 @@ while process_page():
     next_button = driver.find_element_by_css_selector(next_button_selector)
     next_button.click()
     time.sleep(2)
+    i = i+1
+    if i == 2: break
 
 print("quitting")
 driver.quit()
 
 
+filename = "politician_salaries.csv"
+
+with open(filename, 'w', newline='') as csvFile:
+  writer = csv.writer(csvFile)
+  for politicianData in politicianList:
+      writer.writerow(politicianData)
