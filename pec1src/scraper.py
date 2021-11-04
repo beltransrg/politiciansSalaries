@@ -111,6 +111,8 @@ time.sleep(2)
 politicianList = []
 headerList=["Name","Salary"]
 politicianList.append(headerList)
+
+#Descomentar i para scripear todas las páginas
 i = 0
 # processing one page (TODO loop)
 while process_page():
