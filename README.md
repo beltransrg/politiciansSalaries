@@ -13,18 +13,14 @@ En la carpeta docs/ se puede encontrar el resultado de la extracción en formato
 
  
 ├── LICENSE
-├── Makefile           
 ├── README.md          
 ├── data
 │   └── SPANISH_POLITICIANS_SALARIES.csv            <- Dataset generado
-│
-├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-│   └── resultado_html <- En esta carpeta puede encontrar la descarga del notebook de jupyter ejecutado de principio a fin
 ├── notebooks          <- En la carpeta notebooks encontramos un acceso vía notebook al código
 │
 ├── pec1src            <- Código fuente empleado en este proyecto
 │   ├── __init__.py    <- Creación del módulo Python
 │   │
 │   ├── scrapper.py   	<- Módulo principal para ejecutar el proceso de extracción
-│   │						   		
+│   │				   		
 │   ├── writer  	<-  Módulo python encargado de generar el fichero de salida a partir de una lista proporcionada por el módulo scrapper.py
