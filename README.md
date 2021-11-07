@@ -11,7 +11,6 @@ Para ejecutar el script es necesario instalar las siguientes bibliotecas:
 La ejecución del fichero se lleva a cabo mediante el job de python scraper.py sin necesidad de incluir parámetros.
 En la carpeta docs/ se puede encontrar el resultado de la extracción en formato csv bajo el nombre "SPANISH_POLITICIANS_SALARIES.csv"
 
- 
 ├── LICENSE
 ├── Makefile           
 ├── README.md          
@@ -26,5 +25,5 @@ En la carpeta docs/ se puede encontrar el resultado de la extracción en formato
 │   ├── __init__.py    <- Creación del módulo Python
 │   │
 │   ├── scrapper.py   	<- Módulo principal para ejecutar el proceso de extracción
-│   │						   		
+│   │
 │   ├── writer  	<-  Módulo python encargado de generar el fichero de salida a partir de una lista proporcionada por el módulo scrapper.py
