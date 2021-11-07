@@ -5,10 +5,21 @@ import writer
 
 last_active_page = ''
 
+from selenium.common.exceptions import NoSuchElementException        
+def get_value_by_selector(driver, selector):
+    try:
+        return driver.find_element_by_css_selector(selector).text
+    except NoSuchElementException:
+        return None
+
+def get_value_by_xpath(driver, xpath):
+    try:
+        return driver.find_element_by_xpath(xpath).text
+    except NoSuchElementException:
+        return None
+
 def process_person_in_new_tab(id, url):
 
-    #id
-    
     # Open a new window
     driver.execute_script("window.open('');")
 
@@ -20,8 +31,12 @@ def process_person_in_new_tab(id, url):
     # Variable att contain the attributes of each person
     att =[]
     
-    #id
+    # id
     att.append(id)
+
+    # fecha de extracción
+    today = datetime.today().strftime('%Y-%m-%d')
+    att.append(today)
 
     # nombre
     title = driver.find_element_by_xpath('//h1').text
@@ -42,32 +57,48 @@ def process_person_in_new_tab(id, url):
     att.append(job_title)
     att.append(affiliation)
 
-    # fecha nacimiento
-
     # institucion
+    institution = get_value_by_selector(driver, '.location > dd:nth-child(2) > span:nth-child(1)')
+    att.append(institution)
+
+    # bruto anual
+    salary = driver.find_element_by_xpath("//div[@id='comparator']")
+    salary = salary.text.replace('COMPARADOR','').split()[0]
+    att.append(salary)
+    
+    # bruto mensual (y desglose)
+    salary_month = get_value_by_xpath(driver, '*//tr/th[contains(text(),"Salario bruto mensual")]/following-sibling::td')    
+    salary_month_base = get_value_by_xpath(driver, '*//tr/th[contains(text(),"Salario base")]/following-sibling::td')
+    salary_month_supplement = get_value_by_xpath(driver, '*//tr/th[contains(text(),"Suplementos")]/following-sibling::td')
+    salary_month_diets = get_value_by_xpath(driver, '*//tr/th[contains(text(),"Dietas")]/following-sibling::td')
+    # nos quedamos sólo con los números
+    if salary_month:
+            salary_month = salary_month.split()[0]
+    if salary_month_base:
+            salary_month_base = salary_month_base.split()[0]
+    if salary_month_supplement:
+            salary_month_supplement = salary_month_supplement.split()[0]
+    if salary_month_diets:
+            salary_month_diets = salary_month_diets.split()[0]
+
+    att.append(salary_month)
+    att.append(salary_month_base)
+    att.append(salary_month_supplement)
+    att.append(salary_month_diets)
+
+    # fecha nacimiento
+    birth_date = get_value_by_selector(driver, '#content > div > section.b-bio > div > div > div > div.col-12.col-lg-4.col-xl-3.offset-xl-1.float-lg-right > div > dl.date > dd')
+    att.append(birth_date)
 
     # biografia
+    biography = get_value_by_selector(driver, '#content > div > section.b-bio > div > div > div > div.col-12.col-lg-8 > div > p')
+    att.append(biography)
 
     # historico (V2?)
 
     # foto (V2?) => aqui parece que hay derechos y demas
 
-    # bruto anual
-    salary =driver.find_element_by_xpath("//div[@id='comparator']")
-    salary = salary.text.replace('COMPARADOR','').split()[0]
-    att.append(salary)
-    
-    #fecha de extracción
-    today = datetime.today().strftime('%Y-%m-%d')
-    att.append(today)
-
-    
-
     politicianList.append(att)
-
-#get_attribute() to get value of input box
-    
-    # bruto mensual
 
     # close the active tab
     driver.close()
@@ -92,11 +123,9 @@ def process_page():
         # looping over persons
         for person in persons:
             i += 1
-            #product_name = result.text
             link = person.find_element_by_tag_name('a')
             url_link = link.get_attribute("href")
             process_person_in_new_tab(i,url_link)
-            #print(url_link)
 
         # return value to keep going on
         return True
@@ -120,7 +149,7 @@ def process_page():
 
 
 
-# trying to use Selenium
+# trying to use Selenium => initializing
 print("initializing webdriver")
 driver = webdriver.Firefox()
 
@@ -131,9 +160,8 @@ driver.get(url)
 print("sleeping")
 time.sleep(2)
 
-
 politicianList = []
-headerList=["Id","Name","Active","JobTitle","Affiliation","Salary","Date"]
+headerList = ["Id", "Date", "Name", "Active", "JobTitle", "Affiliation", "Institution", "GrossSalary_Year", "GrossSalary_Month", "GrossSalary_Month_Base", "GrossSalary_Month_Supplement", "GrossSalary_Month_Diets", "BirthDate", "Biography"]
 politicianList.append(headerList)
 
 #Descomentar i para scripear todas las páginas
