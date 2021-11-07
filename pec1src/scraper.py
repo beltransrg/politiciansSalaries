@@ -35,7 +35,7 @@ def process_person_in_new_tab(id, url):
     att.append(id)
 
     # fecha de extracción
-    today = datetime.today().strftime('%Y-%m-%d')
+    today = datetime.today().strftime('%d-%m-%Y')
     att.append(today)
 
     # nombre
@@ -175,7 +175,7 @@ while process_page():
     next_button.click()
     time.sleep(2)
     j = j+1
-    if j == 1: break
+    #if j == 1: break
 
 print("quitting")
 driver.quit()
