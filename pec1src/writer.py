@@ -10,7 +10,7 @@ def write_file(politicianList):
       for politicianData in politicianList:
           writer.writerow(politicianData)
 
-def write_file(politicianList, idx):
+def write_file_batch(politicianList, idx):
     fileName = "SPANISH_POLITICIANS_SALARIES" + str(idx) + ".csv"
     path ='../data/'
     filePath = path + fileName
