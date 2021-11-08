@@ -93,8 +93,8 @@ def process_person_in_new_tab(id, url):
         att.append(birth_date)
 
         # biografia
-        biography = get_value_by_selector(driver, '#content > div > section.b-bio > div > div > div > div.col-12.col-lg-8 > div > p')
-        att.append(biography)
+        #biography = get_value_by_selector(driver, '#content > div > section.b-bio > div > div > div > div.col-12.col-lg-8 > div > p')
+        #att.append(biography)
 
         # historico (V2?)
 
@@ -186,7 +186,7 @@ print("sleeping")
 time.sleep(2)
 
 politicianList = []
-headerList = ["Id", "Date", "Name", "Active", "JobTitle", "Affiliation", "Institution", "GrossSalary_Year", "GrossSalary_Month", "GrossSalary_Month_Base", "GrossSalary_Month_Supplement", "GrossSalary_Month_Diets", "BirthDate", "Biography"]
+headerList = ["Id", "Date", "Name", "Active", "JobTitle", "Affiliation", "Institution", "GrossSalary_Year", "GrossSalary_Month", "GrossSalary_Month_Base", "GrossSalary_Month_Supplement", "GrossSalary_Month_Diets", "BirthDate"]
 politicianList.append(headerList)
 
 #Descomentar i para scripear todas las páginas
@@ -202,8 +202,8 @@ while process_page(j):
     j = j+1
     #if j == 1: break
 
-    # descargar cada 50 paginas
-    if j > 0 and (j % 50 == 0) and (len(politicianList) > 2):
+    # descargar cada 10 paginas
+    if j > 0 and (j % 10 == 0) and (len(politicianList) > 2):
         print(f"flushing politicians until page {j}")
         writer.write_file_batch(politicianList, j)
         politicianList = []
