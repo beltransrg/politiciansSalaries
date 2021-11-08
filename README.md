@@ -8,8 +8,12 @@ Extracción atributos asociados a cargos públicos del portal de trasparencia Ne
 Para ejecutar el script es necesario instalar las siguientes bibliotecas:
  pip install selenium
  
+También es necesario disponer de firefox Browser instalado para poder realizar la navegación.
+ 
 La ejecución del fichero se lleva a cabo mediante el job de python scraper.py sin necesidad de incluir parámetros.
 En la carpeta docs/ se puede encontrar el resultado de la extracción en formato csv bajo el nombre "SPANISH_POLITICIANS_SALARIES.csv"
+
+
 
 ├── LICENSE
 ├── README.md          
